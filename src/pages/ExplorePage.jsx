@@ -17,6 +17,15 @@ import { track } from '../lib/posthog'
 
 const RECENTS_KEY = 'sociamart.recentSearches'
 
+// Shop-by-budget ranges tuned for the Nigerian market.
+const BUDGETS = [
+  { id: 'u5', label: 'Under ₦5k', min: 0, max: 5_000 },
+  { id: '5-20', label: '₦5k – ₦20k', min: 5_000, max: 20_000 },
+  { id: '20-50', label: '₦20k – ₦50k', min: 20_000, max: 50_000 },
+  { id: '50-200', label: '₦50k – ₦200k', min: 50_000, max: 200_000 },
+  { id: '200+', label: '₦200k+', min: 200_000, max: null },
+]
+
 function haversineKm(a, b) {
   if (!a || !b) return Infinity
   const R = 6371
@@ -40,6 +49,7 @@ export default function ExplorePage() {
   const [input, setInput] = useState('')
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState(null)
+  const [budget, setBudget] = useState(null) // { min, max } | null
   const [recents, setRecents] = useState(() => {
     try {
       return JSON.parse(localStorage.getItem(RECENTS_KEY) || '[]')
@@ -84,16 +94,24 @@ export default function ExplorePage() {
     [products, location]
   )
 
-  const searching = query.length > 0 || category
+  const searching = query.length > 0 || category || budget
   const results = useMemo(() => {
     let list = withDistance
     if (category) list = list.filter((p) => p.category === category)
+    if (budget) {
+      list = list.filter((p) => {
+        const n = Number(p.price)
+        return n >= budget.min && (budget.max == null || n <= budget.max)
+      })
+    }
     if (query) {
       const q = query.toLowerCase()
       list = list.filter((p) => p.title?.toLowerCase().includes(q) || p.description?.toLowerCase().includes(q))
     }
+    // Budget shoppers see cheapest-first; otherwise keep default ordering.
+    if (budget) list = [...list].sort((a, b) => a.price - b.price)
     return list
-  }, [withDistance, query, category])
+  }, [withDistance, query, category, budget])
 
   const nearYou = useMemo(() => withDistance.filter((p) => p.distance_km != null && p.distance_km <= 5).slice(0, 6), [withDistance])
   const trending = useMemo(() => [...withDistance].sort((a, b) => (b.views ?? 0) - (a.views ?? 0)).slice(0, 10), [withDistance])
@@ -140,6 +158,26 @@ export default function ExplorePage() {
             {c.label}
           </Pill>
         ))}
+      </div>
+
+      {/* Shop by budget */}
+      <div>
+        <p className="mb-1.5 text-xs font-semibold uppercase tracking-wide text-[var(--color-text-muted)]">💰 Shop by budget</p>
+        <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 pb-1">
+          {BUDGETS.map((b) => (
+            <Pill
+              key={b.id}
+              active={budget?.id === b.id}
+              onClick={() => {
+                const next = budget?.id === b.id ? null : b
+                setBudget(next)
+                if (next) track('filter_applied', { filter_types_used: ['budget'], budget: b.id })
+              }}
+            >
+              {b.label}
+            </Pill>
+          ))}
+        </div>
       </div>
 
       {loading ? (

@@ -155,9 +155,11 @@ export default function ProductDetailPage() {
               </p>
             </div>
           </button>
-          <Button size="sm" variant={following ? 'outline' : 'primary'} onClick={onFollow}>
-            {following ? 'Following' : 'Follow'}
-          </Button>
+          {(!user || user.id !== product.seller_id) && (
+            <Button size="sm" variant={following ? 'outline' : 'primary'} onClick={onFollow}>
+              {following ? 'Following' : 'Follow'}
+            </Button>
+          )}
         </div>
 
         {/* Location + category */}

@@ -117,7 +117,14 @@ export default function SellerProfilePage() {
 
       <div className="space-y-6 px-4 pt-6">
         <section>
-          <h2 className="mb-3 font-bold font-display">Products</h2>
+          <div className="mb-3 flex items-baseline justify-between">
+            <h2 className="text-lg font-extrabold font-display">🛍️ Shop</h2>
+            {products.length > 0 && (
+              <span className="text-xs font-medium text-[var(--color-text-muted)]">
+                {products.length} product{products.length === 1 ? '' : 's'}
+              </span>
+            )}
+          </div>
           <SellerProductsGrid products={products} loading={loading} seller={seller} />
         </section>
 

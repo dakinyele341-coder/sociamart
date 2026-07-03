@@ -118,7 +118,10 @@ export default function FeedPostCard({ post, saved = false, following = false, c
     else if (result === 'failed') toast.error('Could not share')
   }
 
-  const isOwn = user?.id === post.seller_id
+  // Only treat as "own post" for a signed-in user with a matching seller id —
+  // `undefined === undefined` must never hide the Follow button.
+  const isOwn = Boolean(user?.id) && user.id === post.seller_id
+  const isVideoPost = Boolean(post.video_url)
 
   return (
     <article ref={articleRef} data-card-index={cardIndex} className="overflow-hidden rounded-2xl border border-[var(--color-border)] bg-[var(--color-surface)] shadow-soft">
@@ -181,11 +184,16 @@ export default function FeedPostCard({ post, saved = false, following = false, c
           <span className="ml-auto text-xs">👁 {post.views ?? 0}</span>
         </div>
 
-        {post.is_available && (
+        {/* Video posts are showcase-style: no Buy button, just a details CTA. */}
+        {isVideoPost ? (
+          <Button fullWidth variant="outline" className="mt-1" onClick={() => navigate(`/product/${post.id}`)}>
+            View item ›
+          </Button>
+        ) : post.is_available ? (
           <Button fullWidth className="mt-1" onClick={() => setBuyOpen(true)} leftIcon={<WhatsAppIcon className="h-5 w-5" />}>
             Buy on WhatsApp
           </Button>
-        )}
+        ) : null}
       </div>
 
       <BuyWhatsAppModal open={buyOpen} onClose={() => setBuyOpen(false)} product={{ ...post, seller }} />
