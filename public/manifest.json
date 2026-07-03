@@ -1,0 +1,13 @@
+{
+  "name": "SociaMart",
+  "short_name": "SociaMart",
+  "description": "Discover. Connect. Buy. Local social commerce for Nigeria.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F7F7FB",
+  "theme_color": "#FF5722",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "/logo/logo-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,17 @@
+<svg width="248" height="64" viewBox="0 0 248 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SociaMart">
+  <defs>
+    <linearGradient id="sm-pin-l" x1="12" y1="4" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FF6E40"/>
+      <stop offset="1" stop-color="#FF5722"/>
+    </linearGradient>
+  </defs>
+  <!-- Icon -->
+  <path d="M32 4C19.85 4 10 13.6 10 25.45C10 41.2 32 60 32 60C32 60 54 41.2 54 25.45C54 13.6 44.15 4 32 4Z" fill="url(#sm-pin-l)"/>
+  <path d="M24.2 21.5h15.6c0.9 0 1.66 0.68 1.74 1.58l1.2 13.2A1.75 1.75 0 0 1 41 38.2H23a1.75 1.75 0 0 1-1.74-1.92l1.2-13.2c0.08-0.9 0.84-1.58 1.74-1.58Z" fill="#FFFFFF"/>
+  <path d="M27 23.2v-1.6a5 5 0 0 1 10 0v1.6" stroke="#1A1A2E" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+  <circle cx="32" cy="30.8" r="2.6" fill="#FF5722"/>
+  <!-- Wordmark -->
+  <text x="66" y="40" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="28" font-weight="800" letter-spacing="-0.5">
+    <tspan fill="#1A1A2E">Socia</tspan><tspan fill="#FF5722">Mart</tspan>
+  </text>
+</svg>

@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Brand palette */
+  --color-primary: #ff5722;
+  --color-primary-dark: #e64a19;
+  --color-navy: #1a1a2e;
+  --color-success: #22c55e;
+  --color-error: #ef4444;
+  --color-verified: #3b82f6;
+
+  /* Surface tokens */
+  --color-bg: #f7f7fb;
+  --color-surface: #ffffff;
+  --color-border: #ececf2;
+  --color-text: #1a1a2e;
+  --color-text-muted: #6b6b7b;
+
+  color-scheme: light;
+}
+
+.dark {
+  --color-bg: #121221;
+  --color-surface: #1c1c30;
+  --color-border: #2a2a40;
+  --color-text: #f4f4fa;
+  --color-text-muted: #a0a0b8;
+
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: 'Inter', system-ui, sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior-y: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    color: var(--color-text);
+  }
+
+  #root {
+    min-height: 100dvh;
+  }
+}
+
+@layer components {
+  /* Signature tactile lift for cards and tappable surfaces */
+  .tactile-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    will-change: transform;
+  }
+
+  .tactile-card:hover,
+  .tactile-card:active {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(26, 26, 46, 0.1),
+      0 4px 6px -2px rgba(26, 26, 46, 0.05);
+  }
+
+  /* Tap-press feedback for buttons */
+  .tactile-press {
+    transition: transform 0.12s ease-out;
+  }
+
+  .tactile-press:active {
+    transform: scale(0.97);
+  }
+
+  /* Emoji reaction pop on tap */
+  @keyframes reaction-pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); }
+    100% { transform: scale(1); }
+  }
+  .reaction-pop {
+    animation: reaction-pop 0.2s ease-out;
+  }
+
+  .skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skeleton-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.45),
+      transparent
+    );
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Safe-area aware bottom padding for mobile nav */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Dual-handle range slider: track is click-through, only thumbs are active. */
+  .dual-range {
+    height: 24px;
+  }
+  .dual-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    pointer-events: auto;
+    height: 20px;
+    width: 20px;
+    border-radius: 9999px;
+    background: #fff;
+    border: 2px solid var(--color-primary);
+    box-shadow: 0 1px 3px rgba(26, 26, 46, 0.25);
+    cursor: pointer;
+  }
+  .dual-range::-moz-range-thumb {
+    pointer-events: auto;
+    height: 20px;
+    width: 20px;
+    border-radius: 9999px;
+    background: #fff;
+    border: 2px solid var(--color-primary);
+    cursor: pointer;
+  }
+  .dual-range::-webkit-slider-runnable-track,
+  .dual-range::-moz-range-track {
+    background: transparent;
+  }
+}

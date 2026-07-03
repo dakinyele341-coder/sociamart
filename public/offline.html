@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SociaMart — Offline</title>
+    <style>
+      body { margin: 0; height: 100dvh; display: grid; place-items: center; text-align: center;
+        font-family: system-ui, sans-serif; background: #f7f7fb; color: #1a1a2e; padding: 24px; }
+      img { width: 56px; height: 56px; opacity: .7; }
+      h1 { font-size: 20px; margin: 16px 0 4px; }
+      p { color: #6b6b7b; font-size: 14px; max-width: 280px; }
+      button { margin-top: 16px; border: 0; background: #ff5722; color: #fff; font-weight: 600;
+        padding: 10px 20px; border-radius: 12px; font-size: 14px; }
+    </style>
+  </head>
+  <body>
+    <div>
+      <img src="/logo/logo-icon.svg" alt="" />
+      <h1>You're offline</h1>
+      <p>Check your connection and try again.</p>
+      <button onclick="location.reload()">Retry</button>
+    </div>
+  </body>
+</html>
