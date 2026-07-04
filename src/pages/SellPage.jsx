@@ -10,6 +10,7 @@ import { useLocation } from '../context/LocationContext'
 import { useToast } from '../context/ToastContext'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 import { track } from '../lib/posthog'
+import { friendlyDbError } from '../lib/errors'
 
 const TABS = [
   { id: 'sell', label: 'Sell an item' },
@@ -87,7 +88,7 @@ function SellForm() {
       location: location ? `POINT(${location.lon} ${location.lat})` : null,
     })
     setSubmitting(false)
-    if (error) toast.error(error.message)
+    if (error) toast.error(friendlyDbError(error))
     else {
       toast.success('Listing published!')
       setForm({ title: '', price: '', category: '', description: '' })
@@ -177,7 +178,7 @@ function RequestForm() {
       location: location ? `POINT(${location.lon} ${location.lat})` : null,
     })
     setSubmitting(false)
-    if (error) toast.error(error.message)
+    if (error) toast.error(friendlyDbError(error))
     else {
       toast.success('Request posted — sellers will reach out!')
       setForm({ title: '', budget: '', category: '' })

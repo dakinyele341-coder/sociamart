@@ -45,6 +45,12 @@ export default function App() {
     track('$pageview', { path: location.pathname })
   }, [location.pathname])
 
+  // Start each page at the top — otherwise SPA navigation keeps the previous
+  // scroll position (e.g. opening a product from deep in the feed).
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
+
   return (
     <Suspense fallback={<RouteFallback />}>
     <Routes>

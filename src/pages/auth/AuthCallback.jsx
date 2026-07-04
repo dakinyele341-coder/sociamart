@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { supabase, isSupabaseConfigured } from '../../lib/supabase'
 import { useAuth } from '../../context/AuthContext'
@@ -13,8 +13,13 @@ export default function AuthCallback() {
   const navigate = useNavigate()
   const { acceptTerms, refreshProfile } = useAuth()
   const [error, setError] = useState('')
+  const ranRef = useRef(false)
 
   useEffect(() => {
+    // The PKCE code is single-use: guard against double-invocation
+    // (React StrictMode re-runs effects in dev and would burn the code).
+    if (ranRef.current) return
+    ranRef.current = true
     let active = true
 
     async function run() {

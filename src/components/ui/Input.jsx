@@ -6,7 +6,7 @@ import { cn } from '../../lib/cn'
  * Pass `prefix` (e.g. "+234") to render an inline adornment.
  */
 const Input = forwardRef(function Input(
-  { label, hint, error, prefix, leftIcon, type = 'text', className, id, required, ...props },
+  { label, hint, error, prefix, leftIcon, rightIcon, type = 'text', className, id, required, ...props },
   ref
 ) {
   const autoId = useId()
@@ -49,6 +49,7 @@ const Input = forwardRef(function Input(
           )}
           {...props}
         />
+        {rightIcon && <span className="pr-1 text-[var(--color-text-muted)]">{rightIcon}</span>}
       </div>
       {error ? (
         <p className="mt-1.5 text-xs font-medium text-error">{error}</p>

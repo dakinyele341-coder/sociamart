@@ -11,13 +11,13 @@ export default function NotificationsPage() {
   const navigate = useNavigate()
   const { notifications, unreadCount, loading, markAllRead, refetch } = useNotifications()
 
-  // Mark all as read shortly after viewing.
+  // Mark all as read shortly after viewing. Depends on unreadCount so it also
+  // fires once notifications finish loading (or arrive live while on the page).
   useEffect(() => {
-    if (isAuthenticated && unreadCount > 0) {
-      const t = setTimeout(() => markAllRead(), 1200)
-      return () => clearTimeout(t)
-    }
-  }, [isAuthenticated]) // eslint-disable-line react-hooks/exhaustive-deps
+    if (!isAuthenticated || unreadCount === 0) return
+    const t = setTimeout(() => markAllRead(), 1200)
+    return () => clearTimeout(t)
+  }, [isAuthenticated, unreadCount, markAllRead])
 
   const open = (n) => {
     if (!n.is_read) markRead(n.id).then(refetch)

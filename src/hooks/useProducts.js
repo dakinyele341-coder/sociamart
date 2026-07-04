@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+﻿import { useState, useEffect, useCallback } from 'react'
 import { supabase, isSupabaseConfigured } from '../lib/supabase'
 
 /**
@@ -202,7 +202,7 @@ export const DEMO_PRODUCTS = [
     seller_id: 'demo-seller-3',
     title: 'Fresh Ofada Rice (5kg)',
     price: 7500,
-    category: 'groceries',
+    category: 'food-drinks',
     town: 'Ogbomoso',
     state: 'Oyo State',
     images: [],
@@ -216,7 +216,7 @@ export const DEMO_PRODUCTS = [
     seller_id: 'demo-seller-4',
     title: 'Handmade Leather Sandals',
     price: 12000,
-    category: 'handcrafted',
+    category: 'fashion',
     town: 'Ibadan',
     state: 'Oyo State',
     images: [],

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ProfileHeader from '../components/profile/ProfileHeader'
 import SellerProductsGrid from '../components/profile/SellerProductsGrid'
@@ -31,6 +31,12 @@ export default function MyProfilePage() {
       setStats((s) => ({ ...s, followers: f, following: fg }))
     )
   }, [user])
+
+  // Stable identity + bail-out when unchanged, otherwise the child effect that
+  // reports the product count re-fires every render and loops forever.
+  const handleProductCount = useCallback((n) => {
+    setStats((s) => (s.products === n ? s : { ...s, products: n }))
+  }, [])
 
   const tabs = [
     isSeller && { id: 'products', label: 'My Products' },
@@ -80,7 +86,7 @@ export default function MyProfilePage() {
         </div>
 
         <div className="mt-4">
-          {tab === 'products' && <MyProducts userId={user?.id} profile={profile} onCountChange={(n) => setStats((s) => ({ ...s, products: n }))} onManage={() => navigate('/store')} />}
+          {tab === 'products' && <MyProducts userId={user?.id} profile={profile} onCountChange={handleProductCount} onManage={() => navigate('/store')} />}
           {tab === 'saved' && <SavedTab userId={user?.id} />}
           {tab === 'requests' && <RequestsTab userId={user?.id} />}
           {tab === 'reviews' && <MyReviewsTab userId={user?.id} />}
