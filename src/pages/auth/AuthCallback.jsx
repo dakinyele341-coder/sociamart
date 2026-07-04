@@ -52,7 +52,13 @@ export default function AuthCallback() {
         // First-time accounts: stamp terms acceptance now.
         await acceptTerms(userId)
         // Load the freshly-created/updated profile (pass id to dodge the state race).
-        const profile = await refreshProfile(userId)
+        let profile = await refreshProfile(userId)
+
+        // Signing back in within the 30-day window recovers a deactivated account.
+        if (profile?.is_deleted) {
+          await supabase.from('users').update({ is_deleted: false, deleted_at: null }).eq('id', userId)
+          profile = await refreshProfile(userId)
+        }
 
         if (!active) return
         if (!profile?.onboarding_completed) track('user_signed_up', { role: profile?.role })

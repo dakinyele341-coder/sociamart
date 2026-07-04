@@ -320,7 +320,16 @@ create policy users_update on public.users for update using (auth.uid() = id) wi
 
 -- 4.2 Products: anyone reads, only owner mutates
 drop policy if exists products_select on public.products;
-create policy products_select on public.products for select using (true);
+-- Public read, but products from deactivated (is_deleted) or suspended sellers
+-- are hidden; owners keep seeing their own and admins see everything.
+create policy products_select on public.products for select using (
+  auth.uid() = seller_id
+  or public.is_admin(auth.uid())
+  or not exists (
+    select 1 from public.users u
+    where u.id = seller_id and (u.is_deleted or u.is_suspended)
+  )
+);
 
 drop policy if exists products_insert on public.products;
 create policy products_insert on public.products for insert with check (auth.uid() = seller_id);

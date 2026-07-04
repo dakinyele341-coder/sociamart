@@ -79,6 +79,8 @@ export default function ExplorePage() {
       .select('id, full_name, business_name, avatar_url, is_verified, created_at')
       .gte('created_at', since)
       .in('role', ['seller', 'both'])
+      .eq('is_suspended', false)
+      .eq('is_deleted', false)
       .order('created_at', { ascending: false })
       .limit(10)
       .then(({ data }) => setNewSellers(data ?? []))
